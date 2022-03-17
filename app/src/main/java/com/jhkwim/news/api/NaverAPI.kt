@@ -17,6 +17,9 @@ interface NaverAPI {
         private const val CLIENT_ID = "UFVGbXNDH9w14q4tdHx1"
         private const val CLIENT_SECRET = "WvU4bZZmII"
 
+        const val SORT_SIM = "sim"   // 유사도순
+        const val SORT_DATE = "date" // 날짜순
+
         fun create(): NaverAPI {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -50,7 +53,8 @@ interface NaverAPI {
     fun searchNews(
         @Query("query") query: String,
         @Query("display") display: Int,
-        @Query("start") start: Int
+        @Query("start") start: Int,
+        @Query("sort") sort: String = SORT_DATE
     ): Observable<ResultNews>
 
 }

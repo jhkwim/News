@@ -9,11 +9,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsRepository(application: Application) {
 
-    val naverAPI = NaverAPI.create()
+    private val naverAPI = NaverAPI.create()
 
-    fun getNews(searchString: String, start: Int): Observable<ResultNews> = naverAPI.searchNews(searchString, 100, start)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    fun getNews(searchString: String, start: Int): Observable<ResultNews> =
+        naverAPI.searchNews(searchString, 100, start, NaverAPI.SORT_SIM)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 
 }
