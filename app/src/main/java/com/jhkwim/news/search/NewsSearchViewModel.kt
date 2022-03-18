@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jhkwim.news.api.News
-import com.jhkwim.news.repository.NewsRepository
+import com.jhkwim.news.repository.NaverNewsRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,7 +21,7 @@ class NewsSearchViewModel(application: Application) : AndroidViewModel(applicati
     var searchText = MutableLiveData<String>()
     var uri = MutableLiveData<Uri>()
 
-    private val repo = NewsRepository(application)
+    private val repo = NaverNewsRepository()
     private val newsList = arrayListOf<News>()
     private val newsAdapter = NewsAdapter(this)
 
@@ -60,7 +60,7 @@ class NewsSearchViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun toUri(position: Int) {
-        uri.value = Uri.parse(newsList[position].originallink)
+        uri.value = Uri.parse(newsList[position].link)
     }
 
     fun getTile(position: Int): Spanned {

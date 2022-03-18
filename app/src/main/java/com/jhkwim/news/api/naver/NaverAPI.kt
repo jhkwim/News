@@ -1,4 +1,4 @@
-package com.jhkwim.news.api
+package com.jhkwim.news.api.naver
 
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Interceptor
@@ -55,6 +55,6 @@ interface NaverAPI {
         @Query("display") display: Int,
         @Query("start") start: Int,
         @Query("sort") sort: String = SORT_DATE
-    ): Observable<ResultNews>
+    ): Observable<ResultNaverNews>
 
 }
