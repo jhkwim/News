@@ -1,6 +1,5 @@
 package com.jhkwim.news.repository
 
-import android.app.Application
 import com.jhkwim.news.api.News
 import com.jhkwim.news.api.ResultNews
 import com.jhkwim.news.api.naver.NaverAPI
@@ -8,12 +7,12 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class NaverNewsRepository(): NewsRepository {
+class NaverNewsRepository : NewsRepository {
 
     private val naverAPI = NaverAPI.create()
 
-    override fun getNews(searchString: String, start: Int): Observable<ResultNews> =
-        naverAPI.searchNews(searchString, 100, start, NaverAPI.SORT_SIM)
+    override fun getNews(searchString: String): Observable<ResultNews> =
+        naverAPI.searchNews(searchString, 100, 1, NaverAPI.SORT_SIM)
             .subscribeOn(Schedulers.io())
             .map { resultNaverNews ->
                 val newsList = arrayListOf<News>()
