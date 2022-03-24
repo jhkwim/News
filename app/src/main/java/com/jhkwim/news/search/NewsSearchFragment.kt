@@ -37,8 +37,31 @@ class NewsSearchFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, NewsSearchViewModelFactory()).get(NewsSearchViewModel::class.java)
 
-        viewModel.searchedNews.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter?.notifyDataSetChanged()
+        viewModel.searchedNews.observe(viewLifecycleOwner) { newsList ->
+            val adapter = binding.recyclerView.adapter
+
+            adapter ?: return@observe
+
+            if (newsList.isEmpty() && adapter.itemCount > 0) {
+                adapter.notifyItemRangeRemoved(0, adapter.itemCount)
+            } else {
+                val preItemCount = adapter.itemCount
+                val newItemCount = newsList.size
+
+                when {
+                    preItemCount > newItemCount -> {
+                        adapter.notifyItemRangeChanged(0, newItemCount - 1)
+                        adapter.notifyItemRangeRemoved(newItemCount, preItemCount - 1)
+                    }
+                    newItemCount > preItemCount -> {
+                        adapter.notifyItemRangeChanged(0, preItemCount - 1)
+                        adapter.notifyItemRangeInserted(preItemCount, newItemCount)
+                    }
+                    else -> {
+                        adapter.notifyItemRangeChanged(0, preItemCount - 1)
+                    }
+                }
+            }
         }
 
         viewModel.uri.observe(viewLifecycleOwner) { uri ->

@@ -4,23 +4,39 @@ import android.net.Uri
 import android.text.Html
 import android.text.Spanned
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jhkwim.news.api.News
+import com.jhkwim.news.api.ResultNews
 import com.jhkwim.news.repository.NewsRepository
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NewsSearchViewModel(private val repository: NewsRepository) : ViewModel() {
 
     var searchText = MutableLiveData<String>()
-    var uri = MutableLiveData<Uri>()
     var searchedNews = MutableLiveData<List<News>>()
     val searchedNewsSize get() = newsList.size
+    var uri = MutableLiveData<Uri>()
+    val error = MutableLiveData<Error>()
 
     private val newsList = arrayListOf<News>()
 
-    fun getNews() {
+    fun isSearchButtonEnabled(): Boolean {
+        searchText.value?.trim()?.apply {
+            return length > 0
+        }
+        return false
+    }
+
+    fun onSearchButtonClicked(view: View) {
+        getNews()
+    }
+
+    private fun getNews() {
         val size = newsList.size
 
         if (size > 0) {
@@ -29,6 +45,24 @@ class NewsSearchViewModel(private val repository: NewsRepository) : ViewModel() 
 
         val text = searchText.value
         text ?: return
+
+        repository.getNews(text).subscribe(object : Observer<ResultNews> {
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onNext(t: ResultNews) {
+
+            }
+
+            override fun onError(e: Throwable) {
+
+            }
+
+            override fun onComplete() {
+
+            }
+        })
 
         repository.getNews(text).subscribe(
             { resultNews ->

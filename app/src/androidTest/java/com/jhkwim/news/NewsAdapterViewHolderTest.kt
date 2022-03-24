@@ -29,7 +29,7 @@ class NewsAdapterViewHolderTest {
             false
         )
         viewModel = NewsSearchViewModel(NaverNewsRepository())
-        viewHolder = NewsViewHolder(view, viewModel)
+        viewHolder = NewsViewHolder(view)
     }
 
     @Test

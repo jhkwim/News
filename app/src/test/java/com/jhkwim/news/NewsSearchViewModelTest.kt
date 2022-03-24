@@ -11,11 +11,12 @@ import io.kotest.matchers.shouldBe
 import io.mockk.*
 import io.reactivex.rxjava3.core.Observable
 
-class NewsSearchViewModelTest2 : StringSpec({
+class NewsSearchViewModelTest : StringSpec({
 
     lateinit var mockNewsRepository: NewsRepository
     lateinit var viewModel: NewsSearchViewModel
 
+    val dummySearchString = "네이버"
     val dummyNews = News("title", "link", "description", "pubDate")
     val dummyList = listOf(dummyNews)
 
@@ -24,23 +25,41 @@ class NewsSearchViewModelTest2 : StringSpec({
         viewModel = NewsSearchViewModel(mockNewsRepository)
     }
 
-    "뉴스 검색 후 searchedNews에 결과값이 반영 되는가" {
-        val searchString = "네이버"
+    "검색버튼 활성화/비활성화 테스트" {
+        viewModel.searchText.value = null
 
-        viewModel.searchText.value = searchString
+        viewModel.isSearchButtonEnabled() shouldBe false
 
-        val expected = Observable.just(ResultNews(dummyList))
+        viewModel.searchText.value = dummySearchString
 
-        every { mockNewsRepository.getNews(searchString) } returns expected
-
-        viewModel.getNews()
-
-        verify(exactly = 1) {
-            mockNewsRepository.getNews(searchString)
-        }
-
-        viewModel.searchedNews.value shouldBe dummyList
+        viewModel.isSearchButtonEnabled() shouldBe true
     }
+
+//    "검색버튼 테스트" {
+//
+//
+//        viewModel.onSearchButtonClicked(mockk())
+//
+//
+//    }
+//
+//    "뉴스 검색 후 searchedNews에 결과값이 반영 되는가" {
+//        val searchString = "네이버"
+//
+//        viewModel.searchText.value = searchString
+//
+//        val expected = Observable.just(ResultNews(dummyList))
+//
+//        every { mockNewsRepository.getNews(searchString) } returns expected
+//
+////        viewModel.getNews()
+//
+//        verify(exactly = 1) {
+//            mockNewsRepository.getNews(searchString)
+//        }
+//
+//        viewModel.searchedNews.value shouldBe dummyList
+//    }
 
     "링크" {
         mockkStatic(Uri::class)

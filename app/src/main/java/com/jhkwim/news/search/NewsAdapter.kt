@@ -10,7 +10,8 @@ class NewsAdapter(private val viewModel: NewsSearchViewModel) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view = LayoutNewsViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NewsViewHolder(view, viewModel)
+        view.viewModel = viewModel
+        return NewsViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
