@@ -33,6 +33,7 @@
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:text="@={newsSearchViewModel.searchText}"
+                android:afterTextChanged="@{(text) -> newsSearchViewModel.searchTextChanged(text)}"
                 tools:ignore="LabelFor" />
 
             <Button
@@ -40,8 +41,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="3"
-업                android:enabled="@{newsSearchViewModel.searchButtonEnabled}"
-                android:onClick="@{(v) -> newsSearchViewModel.onSearchButtonClicked(v)}"
+                android:enabled="@{newsSearchViewModel.isEnabledSearchButton}"
+                android:onClick="@{() -> newsSearchViewModel.onSearchButtonClicked(newsSearchViewModel.searchText)}"
                 android:text="@string/search" />
 
         </LinearLayout>

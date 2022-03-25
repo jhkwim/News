@@ -11,7 +11,7 @@ class NaverNewsRepository : NewsRepository {
 
     private val naverAPI = NaverAPI.create()
 
-    override fun getNews(searchString: String): Observable<ResultNews> =
+    override fun searchNews(searchString: String): Observable<ResultNews> =
         naverAPI.searchNews(searchString, 100, 1, NaverAPI.SORT_SIM)
             .subscribeOn(Schedulers.io())
             .map { resultNaverNews ->
